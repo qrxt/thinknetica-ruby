@@ -1,0 +1,5 @@
+require_relative 'quadratic_equation'
+
+include QuadraticEquation
+
+solve_quadratic_equation

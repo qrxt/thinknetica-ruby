@@ -18,3 +18,10 @@ run-1-3:
 
 test-1-3:
 	ruby ./basics-1/3-right-triangle/triangle_test.rb
+
+# 1-4
+run-1-4:
+	ruby ./basics-1/4-quadratic-equation/main.rb
+
+test-1-4:
+	ruby ./basics-1/4-quadratic-equation/quadratic_equation_test.rb
