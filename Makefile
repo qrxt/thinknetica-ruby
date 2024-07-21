@@ -65,3 +65,12 @@ test-2-5:
 # 2-6
 run-2-6:
 	ruby ./basics-2/6-shopping-list/main.rb
+
+# 3
+run-3:
+	ruby ./oop-basics/main.rb
+
+test-3:
+	ruby ./oop-basics/train_test.rb
+	ruby ./oop-basics/station_test.rb
+	ruby ./oop-basics/route_test.rb
