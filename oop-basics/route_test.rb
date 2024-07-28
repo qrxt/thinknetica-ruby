@@ -15,7 +15,7 @@ class TestRoute < Test::Unit::TestCase
     assert_equal("A-C", route.name)
     assert_equal(departure_station, route.departure_station)
     assert_equal(arrival_station, route.arrival_station)
-    assert_equal([departure_station, arrival_station], route.get_stations)
+    assert_equal([departure_station, arrival_station], route.stations)
     assert_equal([], route.intermidiate_stations)
   end
 
@@ -32,10 +32,10 @@ class TestRoute < Test::Unit::TestCase
 
     route.add_intermidiate_station(intermidiate_station)
 
-    assert_equal([departure_station, intermidiate_station, arrival_station], route.get_stations)
+    assert_equal([departure_station, intermidiate_station, arrival_station], route.stations)
 
     route.remove_intermidiate_station('B')
 
-    assert_equal([departure_station, arrival_station], route.get_stations)
+    assert_equal([departure_station, arrival_station], route.stations)
   end
 end

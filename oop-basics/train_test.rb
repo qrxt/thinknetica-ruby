@@ -99,25 +99,25 @@ class TestTrain < Test::Unit::TestCase
     assert_equal("A", train.current_station.name)
     assert_equal("B", train.next_station.name)
 
-    train.move_forward
+    train.go_next_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("B", train.current_station.name)
     assert_equal("C", train.next_station.name)
 
-    train.move_forward
+    train.go_next_station
 
     assert_equal("B", train.previous_station.name)
     assert_equal("C", train.current_station.name)
     assert_equal("C", train.next_station.name)
 
-    train.move_backward
+    train.go_previous_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("B", train.current_station.name)
     assert_equal("C", train.next_station.name)
 
-    train.move_backward
+    train.go_previous_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("A", train.current_station.name)
@@ -134,14 +134,14 @@ class TestTrain < Test::Unit::TestCase
     assert_equal("A", train.current_station.name)
     assert_equal("C", train.next_station.name)
 
-    train.move_backward
+    train.go_previous_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("A", train.current_station.name)
     assert_equal("C", train.next_station.name)
 
-    train.move_forward
-    train.move_forward
+    train.go_next_station
+    train.go_next_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("C", train.current_station.name)
@@ -155,7 +155,7 @@ class TestTrain < Test::Unit::TestCase
 
     train.assign_route(route)
 
-    train.move_backward
+    train.go_previous_station
 
     assert_equal("A", train.previous_station.name)
     assert_equal("A", train.current_station.name)
@@ -169,9 +169,9 @@ class TestTrain < Test::Unit::TestCase
     route.add_intermidiate_station(Station.new("B"))
     train.assign_route(route)
 
-    train.move_forward # B
-    train.move_forward # C
-    train.move_forward
+    train.go_next_station # B
+    train.go_next_station # C
+    train.go_next_station
 
     assert_equal("B", train.previous_station.name)
     assert_equal("C", train.current_station.name)

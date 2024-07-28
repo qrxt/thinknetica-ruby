@@ -17,7 +17,7 @@ class Route
     @intermidiate_stations = @intermidiate_stations.reject { |station| station.name == station_name }
   end
 
-  def get_stations()
+  def stations()
     [@departure_station, @intermidiate_stations, @arrival_station].flatten
   end
 end
