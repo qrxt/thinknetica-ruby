@@ -74,3 +74,14 @@ test-3:
 	ruby ./oop-basics/train_test.rb
 	ruby ./oop-basics/station_test.rb
 	ruby ./oop-basics/route_test.rb
+
+# 4
+run-4:
+	irb -r ./oop-inheritance/main.rb
+
+test-4:
+	ruby ./oop-inheritance/train/train_test.rb
+	ruby ./oop-inheritance/station/station_test.rb
+	ruby ./oop-inheritance/route/route_test.rb
+	ruby ./oop-inheritance/train/passenger_train_test.rb
+	ruby ./oop-inheritance/train/cargo_train_test.rb
