@@ -31,9 +31,9 @@ class TestTrain < Test::Unit::TestCase
 
     assert_equal(0, train.speed)
 
-    train.speed = 100
+    train.start
 
-    assert_equal(100, train.speed)
+    assert_equal(65, train.speed)
 
     train.stop
 
@@ -61,7 +61,7 @@ class TestTrain < Test::Unit::TestCase
 
     train.add_carriage(carriage)
 
-    train.speed = 60
+    train.start
 
     train.remove_carriage(carriage)
 

@@ -5,7 +5,7 @@ require_relative "station/station"
 require_relative "route/route"
 
 class Railroad
-  attr_accessor :trains, :stations, :routes
+  attr_reader :trains, :stations, :routes
 
   def initialize()
     @is_running = true
@@ -51,6 +51,11 @@ class Railroad
   end
 
   private
+
+  # методы ниже не предназначены для вызова снаружи, подразумевается,
+  # что все нужные действия можно выполнить через rr.menu
+
+  attr_writer :trains, :stations, :routes
 
   def seed()
     station_a = Station.new("A")
