@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Route
   attr_reader :name, :intermidiate_stations, :arrival_station, :departure_station
 
@@ -17,15 +19,15 @@ class Route
     @intermidiate_stations = @intermidiate_stations.reject { |station| station.name == station_name }
   end
 
-  def stations()
+  def stations
     [@departure_station, @intermidiate_stations, @arrival_station].flatten
   end
 
-  def has_station?(name)
-    stations.map {|station| station.name }.include?(name)
+  def station?(name)
+    stations.map(&:name).include?(name)
   end
 
-  def info()
-    stations.map {|station| station.name }.join("-")
+  def info
+    stations.map(&:name).join('-')
   end
 end

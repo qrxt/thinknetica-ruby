@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Station
   attr_reader :name, :trains
 
@@ -14,12 +16,12 @@ class Station
     @trains = @trains.reject { |train| train_number == train.number }
   end
 
-  def get_train_types()
+  def train_types
     @trains.group_by(&:class)
   end
 
   def send(train_number)
-    current_train = @trains.find {|train| train.number == train_number}
+    current_train = @trains.find { |train| train.number == train_number }
 
     current_train.go_next_station
   end

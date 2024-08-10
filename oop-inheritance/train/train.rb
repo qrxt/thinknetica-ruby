@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Train
   attr_reader :number, :carriages, :current_route, :speed
 
   def initialize(number)
-    raise "Train не может быть инициализирован напрямую" if self.class == Train
+    raise 'Train не может быть инициализирован напрямую' if instance_of?(Train)
 
     @number = number
     @carriages = []
@@ -29,8 +31,8 @@ class Train
     current_station.add_train(self)
   end
 
-  def current_station()
-    return @current_route.stations()[@current_station_index] if @current_route
+  def current_station
+    @current_route.stations[@current_station_index] if @current_route
   end
 
   def next_station
@@ -46,7 +48,7 @@ class Train
   def go_next_station
     return if current_station == next_station
 
-    current_station.remove_train(self.number)
+    current_station.remove_train(number)
     @current_station_index += 1
     current_station.add_train(self)
   end
@@ -54,7 +56,7 @@ class Train
   def go_previous_station
     return if previous_station == current_station
 
-    current_station.remove_train(self.number)
+    current_station.remove_train(number)
     @current_station_index -= 1
     current_station.add_train(self)
   end
@@ -63,8 +65,8 @@ class Train
     @carriages = @carriages.reject { |carriage| carriage.number == number }
   end
 
-  def info()
-    return "#{self.class} #{@number}"
+  def info
+    "#{self.class} #{@number}"
   end
 
   def add_carriage(carriage)
@@ -73,11 +75,13 @@ class Train
 
   protected
 
-  def initial_speed() # метод для внутреннего использования, снаружи не используется
+  # метод для внутреннего использования, снаружи не используется
+  def initial_speed
     60
   end
 
-  def start!() # метод для внутреннего использования, для внешнего - start
+  # метод для внутреннего использования, для внешнего - start
+  def start!
     self.speed = initial_speed
   end
 
