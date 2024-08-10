@@ -1,12 +1,46 @@
 # frozen_string_literal: true
 
+require_relative 'utils/highlight'
 require_relative 'carriage/carriage'
 require_relative 'train/passenger_train'
 require_relative 'train/cargo_train'
 require_relative 'station/station'
 require_relative 'route/route'
 
+MENU_MAIN = {
+  create: 'создать объект',
+  manage: 'произвести операции над объектами',
+  display: 'вывести данные об объектах',
+  seed: 'сгенерировать начальный набор объектов',
+  stop: 'завершить выполнение программы'
+}.freeze
+
+MENU_CREATE = {
+  train: 'создать поезд',
+  station: 'создать станцию',
+  route: 'создать маршрут',
+  main: 'вернуться на главную'
+}.freeze
+
+MENU_DISPLAY = {
+  trains: 'вывести список поездов',
+  stations: 'вывести список станция',
+  routes: 'вывести список маршрутов',
+  main: 'вернуться на главную'
+}.freeze
+
+MENU_MANAGE = {
+  add_carriage: 'прицепить вагон к поезду',
+  remove_carriage: 'отцепить вагон от поезда',
+  add_intermidiate_station: 'добавить маршруту дополнительную станцию',
+  assign_route: 'назначить поезду маршрут',
+  move_train: 'отправить поезд на следующую или предыдущую станцию',
+  main: 'вернуться на главную'
+}.freeze
+
 class Railroad
+  include Highlight
+
   attr_reader :trains, :stations, :routes
 
   def initialize
@@ -45,9 +79,8 @@ class Railroad
       when 'manage_assign_route' then manage_assign_route
       when 'manage_move_train' then manage_move_train
 
-      else
-        puts "Страница \e[33m#{@page}\e[0m не найдена. Убедитесь в корректности написания."
-        @page = gets.chomp
+      else not_found
+
       end
     end
   end
@@ -83,7 +116,7 @@ class Railroad
     @trains = [passenger_train, cargo_train]
     @routes = [route]
 
-    puts "\nОбъекты созданы. Подробнее в \e[33mdisplay\e[0m.\n\n"
+    puts "\nОбъекты созданы. Подробнее в #{highlight('display')}.\n\n"
     @page = 'main'
   end
 
@@ -91,12 +124,21 @@ class Railroad
     @is_running = false
   end
 
+  def print_menu(menu)
+    menu.each do |item, description|
+      puts "Введите #{highlight(item)}, если нужно #{description}"
+    end
+  end
+
+  def not_found
+    puts "Страница #{highlight(@page)} не найдена. Убедитесь в корректности написания."
+    @page = gets.chomp
+  end
+
   def main
-    puts "Введите \e[33mcreate\e[0m, если нужно создать объект"
-    puts "Введите \e[33mmanage\e[0m, если нужно произвести операции с объектами"
-    puts "Введите \e[33mdisplay\e[0m, если нужно вывести данные об объектах"
-    puts "Введите \e[33mseed\e[0m, если нужно сгенерировать объекты"
-    puts "Введите \e[33mstop\e[0m, если нужно завершить выполнение программы"
+    MENU_MAIN.each do |item, description|
+      puts "Введите #{highlight(item)}, если нужно #{description}"
+    end
 
     @page = gets.chomp
   end
@@ -106,10 +148,7 @@ class Railroad
   end
 
   def create
-    puts "Введите \e[33mtrain\e[0m, если нужно создать поезд"
-    puts "Введите \e[33mstation\e[0m, если нужно создать станцию"
-    puts "Введите \e[33mroute\e[0m, если нужно создать маршрут"
-    puts "Введите \e[33mmain\e[0m, если нужно вернуться на главную"
+    print_menu(MENU_CREATE)
 
     input = gets.chomp
     @page = create_subpages.include?(input) ? "create_#{input}" : 'main'
@@ -118,7 +157,7 @@ class Railroad
   def create_train
     puts 'Создание поезда'
 
-    puts "Введите тип поезда (\e[33mpassenger\e[0m / \e[33mcargo\e[0m)"
+    puts "Введите тип поезда (#{highlight('passenger')} или #{highlight('cargo')})"
 
     type = gets.chomp
 
@@ -182,7 +221,7 @@ class Railroad
     @routes << route
 
     puts "\nСоздан маршрут: #{route.name}\n"
-    puts "Промежуточные станции можно добавить через \e[33mmanage\e[0m\n\n"
+    puts "Промежуточные станции можно добавить через #{highlight('manage')}\n\n"
 
     @page = 'create'
   end
@@ -192,10 +231,7 @@ class Railroad
   end
 
   def display
-    puts "Введите \e[33mtrains\e[0m, если нужно вывести список поездов"
-    puts "Введите \e[33mstations\e[0m, если нужно вывести список станция"
-    puts "Введите \e[33mroutes\e[0m, если нужно вывести список маршрутов"
-    puts "Введите \e[33mmain\e[0m, если нужно вернуться на главную"
+    print_menu(MENU_DISPLAY)
 
     input = gets.chomp
     @page = display_subpages.include?(input) ? "display_#{input}" : 'main'
@@ -254,12 +290,7 @@ class Railroad
   end
 
   def manage
-    puts "Введите \e[33madd_carriage\e[0m, если нужно прицепить вагон к поезду"
-    puts "Введите \e[33mremove_carriage\e[0m, если нужно отцепить вагон от поезда"
-    puts "Введите \e[33madd_intermidiate_station\e[0m, если нужно добавить маршруту дополнительную станцию"
-    puts "Введите \e[33massign_route\e[0m, если нужно назначить поезду маршрут"
-    puts "Введите \e[33mmove_train\e[0m, если нужно отправить поезд на следующую или предыдущую станцию"
-    puts "Введите \e[33mmain\e[0m, если нужно вернуться на главную"
+    print_menu(MENU_MANAGE)
 
     input = gets.chomp
     @page = manage_subpages.include?(input) ? "manage_#{input}" : 'main'
@@ -376,7 +407,7 @@ class Railroad
 
     return unless train
 
-    puts "Введите \e[33mforward\e[0m или \e[33mbackward\e[0m, чтобы отправить поезд в нужном направлении"
+    puts "Введите #{highlight('forward')} или #{highlight('backward')}, чтобы отправить поезд в нужном направлении"
 
     direction = gets.chomp
 
