@@ -1,3 +1,11 @@
+# Общее
+
+lint:
+	rubocop --config ./.rubocop.yml
+
+lint-fix:
+	rubocop --config ./.rubocop.yml --auto-correct-all
+
 # 1 Основы ruby. Часть 1
 
 # 1-1

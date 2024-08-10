@@ -1,0 +1,493 @@
+# Common configuration.
+
+AllCops:
+  RubyInterpreters:
+    - ruby
+    - macruby
+    - rake
+    - jruby
+    - rbx
+  # Include common Ruby source files.
+  Include:
+    - "**/*.rb"
+  Exclude:
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - ".git/**/*"
+    - "basics-1/**/*"
+    - "basics-2/**/*"
+    - "oop-basics/**/*"
+      # Default formatter will be used if no `-f/--format` option is given.
+  DefaultFormatter: progress
+  # Cop names are displayed in offense messages by default. Change behavior
+  # by overriding DisplayCopNames, or by giving the `--no-display-cop-names`
+  # option.
+  DisplayCopNames: true
+  # Style guide URLs are not displayed in offense messages by default. Change
+  # behavior by overriding `DisplayStyleGuide`, or by giving the
+  # `-S/--display-style-guide` option.
+  DisplayStyleGuide: false
+  # When specifying style guide URLs, any paths and/or fragments will be
+  # evaluated relative to the base URL.
+  StyleGuideBaseURL: https://rubystyle.guide
+  # Documentation URLs will be constructed using the base URL.
+  DocumentationBaseURL: https://docs.rubocop.org/rubocop
+  # Documentation URLs will end with this extension.
+  # DocumentationExtension: .html
+  # Extra details are not displayed in offense messages by default. Change
+  # behavior by overriding ExtraDetails, or by giving the
+  # `-E/--extra-details` option.
+  ExtraDetails: false
+  # Additional cops that do not reference a style guide rule may be enabled by
+  # default. Change behavior by overriding `StyleGuideCopsOnly`, or by giving
+  # the `--only-guide-cops` option.
+  StyleGuideCopsOnly: false
+  # All cops except the ones configured `Enabled: false` in this file are enabled by default.
+  # Change this behavior by overriding either `DisabledByDefault` or `EnabledByDefault`.
+  # When `DisabledByDefault` is `true`, all cops in the default configuration
+  # are disabled, and only cops in user configuration are enabled. This makes
+  # cops opt-in instead of opt-out. Note that when `DisabledByDefault` is `true`,
+  # cops in user configuration will be enabled even if they don't set the
+  # Enabled parameter.
+  # When `EnabledByDefault` is `true`, all cops, even those configured `Enabled: false`
+  # in this file are enabled by default. Cops can still be disabled in user configuration.
+  # Note that it is invalid to set both EnabledByDefault and DisabledByDefault
+  # to true in the same configuration.
+  EnabledByDefault: false
+  DisabledByDefault: false
+  # New cops introduced between major versions are set to a special pending status
+  # and are not enabled by default with warning message.
+  # Change this behavior by overriding either `NewCops: enable` or `NewCops: disable`.
+  # When `NewCops` is `enable`, pending cops are enabled in bulk. Can be overridden by
+  # the `--enable-pending-cops` command-line option.
+  # When `NewCops` is `disable`, pending cops are disabled in bulk. Can be overridden by
+  # the `--disable-pending-cops` command-line option.
+  NewCops: pending
+  # Enables the result cache if `true`. Can be overridden by the `--cache` command
+  # line option.
+  UseCache: true
+  # Threshold for how many files can be stored in the result cache before some
+  # of the files are automatically removed.
+  MaxFilesInCache: 20000
+  # The cache will be stored in "rubocop_cache" under this directory. If
+  # CacheRootDirectory is ~ (nil), which it is by default, the root will be
+  # taken from the environment variable `$XDG_CACHE_HOME` if it is set, or if
+  # `$XDG_CACHE_HOME` is not set, it will be `$HOME/.cache/`.
+  # The CacheRootDirectory can be overwritten by passing the `--cache-root` command
+  # line option or by setting `$RUBOCOP_CACHE_ROOT` environment variable.
+  CacheRootDirectory: ~
+  # It is possible for a malicious user to know the location of RuboCop's cache
+  # directory by looking at CacheRootDirectory, and create a symlink in its
+  # place that could cause RuboCop to overwrite unintended files, or read
+  # malicious input. If you are certain that your cache location is secure from
+  # this kind of attack, and wish to use a symlinked cache location, set this
+  # value to "true".
+  AllowSymlinksInCacheRootDirectory: false
+  # What MRI version of the Ruby interpreter is the inspected code intended to
+  # run on? (If there is more than one, set this to the lowest version.)
+  # If a value is specified for TargetRubyVersion then it is used. Acceptable
+  # values are specified as a float (i.e. 3.0); the teeny version of Ruby
+  # should not be included. If the project specifies a Ruby version in the
+  # .tool-versions or .ruby-version files, Gemfile or gems.rb file, RuboCop will
+  # try to determine the desired version of Ruby by inspecting the
+  # .tool-versions file first, then .ruby-version, followed by the Gemfile.lock
+  # or gems.locked file. (Although the Ruby version is specified in the Gemfile
+  # or gems.rb file, RuboCop reads the final value from the lock file.) If the
+  # Ruby version is still unresolved, RuboCop will use the oldest officially
+  # supported Ruby version (currently Ruby 2.7).
+  TargetRubyVersion: ~
+  # You can specify the parser engine. There are two options available:
+  # - `parser_whitequark` ... https://github.com/whitequark/parser
+  # - `parser_prism` ... https://github.com/ruby/prism (`Prism::Translation::Parser`)
+  # By default, `parser` is used. For the `TargetRubyVersion` value, `parser` can be specified for versions `2.0` and above.
+  # `parser_prism` can be specified for versions `3.3` and above. `parser_prism` is faster but still considered experimental.
+  ParserEngine: parser_whitequark
+  # Determines if a notification for extension libraries should be shown when
+  # rubocop is run. Keys are the name of the extension, and values are an array
+  # of gems in the Gemfile that the extension is suggested for, if not already
+  # included.
+
+Style/StringConcatenation:
+  Description: "Checks for places where string concatenation can be replaced with string interpolation."
+  StyleGuide: "#string-interpolation"
+  Enabled: true
+  Safe: false
+  VersionAdded: "0.89"
+  VersionChanged: "1.18"
+  Mode: aggressive
+Style/StringLiterals:
+  Description: "Checks if uses of quotes match the configured preference."
+  StyleGuide: "#consistent-string-literals"
+  Enabled: true
+  VersionAdded: "0.9"
+  VersionChanged: "0.36"
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+  # If `true`, strings which span multiple lines using `\` for continuation must
+  # use the same type of quotes on each line.
+  ConsistentQuotesInMultiline: false
+
+Style/StringLiteralsInInterpolation:
+  Description: >-
+    Checks if uses of quotes inside expressions in interpolated
+    strings match the configured preference.
+  Enabled: true
+  VersionAdded: "0.27"
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
+Style/DefWithParentheses:
+  Description: "Use def with parentheses when there are arguments."
+  StyleGuide: "#method-parens"
+  Enabled: true
+  VersionAdded: "0.9"
+  VersionChanged: "0.12"
+
+# Checks formatting of special comments
+Style/CommentAnnotation:
+  Description: >-
+    Checks formatting of special comments
+    (TODO, FIXME, OPTIMIZE, HACK, REVIEW, NOTE).
+  StyleGuide: "#annotate-keywords"
+  Enabled: true
+  VersionAdded: "0.10"
+  VersionChanged: "1.20"
+  Keywords:
+    - TODO
+    - FIXME
+    - OPTIMIZE
+    - HACK
+    - REVIEW
+    - NOTE
+  RequireColon: true
+
+Style/CommentedKeyword:
+  Description: "Do not place comments on the same line as certain keywords."
+  Enabled: true
+  SafeAutoCorrect: false
+  VersionAdded: "0.51"
+  VersionChanged: "1.19"
+
+Lint/UselessAccessModifier:
+  Description: "Checks for useless access modifiers."
+  Enabled: true
+  AutoCorrect: contextual
+  VersionAdded: "0.20"
+  VersionChanged: "1.61"
+  ContextCreatingMethods: []
+  MethodCreatingMethods: []
+
+Lint/UselessAssignment:
+  Description: "Checks for useless assignment to a local variable."
+  StyleGuide: "#underscore-unused-vars"
+  Enabled: true
+  AutoCorrect: contextual
+  VersionAdded: "0.11"
+  VersionChanged: "1.61"
+  SafeAutoCorrect: false
+
+Lint/UselessElseWithoutRescue:
+  Description: "Checks for useless `else` in `begin..end` without `rescue`."
+  Enabled: true
+  VersionAdded: "0.17"
+  VersionChanged: "1.31"
+
+Lint/UselessMethodDefinition:
+  Description: "Checks for useless method definitions."
+  Enabled: true
+  AutoCorrect: contextual
+  VersionAdded: "0.90"
+  VersionChanged: "1.61"
+  Safe: false
+
+Lint/UselessRescue:
+  Description: "Checks for useless `rescue`s."
+  Enabled: pending
+  VersionAdded: "1.43"
+
+Lint/UselessRuby2Keywords:
+  Description: "Finds unnecessary uses of `ruby2_keywords`."
+  Enabled: pending
+  VersionAdded: "1.23"
+
+Lint/UselessSetterCall:
+  Description: "Checks for useless setter call to a local variable."
+  Enabled: true
+  Safe: false
+  VersionAdded: "0.13"
+  VersionChanged: "1.2"
+
+Lint/UselessTimes:
+  Description: "Checks for useless `Integer#times` calls."
+  Enabled: true
+  Safe: false
+  AutoCorrect: contextual
+  VersionAdded: "0.91"
+  VersionChanged: "1.61"
+
+Lint/Void:
+  Description: "Possible use of operator/literal/variable in void context."
+  Enabled: true
+  AutoCorrect: contextual
+  VersionAdded: "0.9"
+  VersionChanged: "1.61"
+  CheckForMethodsWithNoSideEffects: false
+
+Naming/PredicateName:
+  Description: "Check the names of predicate methods."
+  StyleGuide: "#bool-methods-qmark"
+  Enabled: true
+  VersionAdded: "0.50"
+  VersionChanged: "0.77"
+  # Predicate name prefixes.
+  NamePrefix:
+    - is_
+    - has_
+    - have_
+  # Predicate name prefixes that should be removed.
+  ForbiddenPrefixes:
+    - is_
+    - has_
+    - have_
+  # Predicate names which, despite having a forbidden prefix, or no `?`,
+  # should still be accepted
+  AllowedMethods:
+    - is_a?
+  # Method definition macros for dynamically generated methods.
+  MethodDefinitionMacros:
+    - define_method
+    - define_singleton_method
+  # Exclude Rspec specs because there is a strong convention to write spec
+  # helpers in the form of `have_something` or `be_something`.
+  Exclude:
+    - "spec/**/*"
+
+Naming/AccessorMethodName:
+  Description: Check the naming of accessor methods for get_/set_.
+  StyleGuide: "#accessor_mutator_method_names"
+  Enabled: true
+  VersionAdded: "0.50"
+
+Layout/EmptyLinesAroundArguments:
+  Description: "Keeps track of empty lines around method arguments."
+  Enabled: true
+  VersionAdded: "0.52"
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Description: "Keep blank lines around attribute accessors."
+  StyleGuide: "#empty-lines-around-attribute-accessor"
+  Enabled: true
+  VersionAdded: "0.83"
+  VersionChanged: "0.84"
+  AllowAliasSyntax: true
+  AllowedMethods:
+    - alias_method
+    - public
+    - protected
+    - private
+
+Layout/EmptyLinesAroundBeginBody:
+  Description: "Keeps track of empty lines around begin-end bodies."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+
+Layout/EmptyLinesAroundBlockBody:
+  Description: "Keeps track of empty lines around block bodies."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+  EnforcedStyle: no_empty_lines
+  SupportedStyles:
+    - empty_lines
+    - no_empty_lines
+
+Layout/EmptyLinesAroundClassBody:
+  Description: "Keeps track of empty lines around class bodies."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+  VersionChanged: "0.53"
+  EnforcedStyle: no_empty_lines
+  SupportedStyles:
+    - empty_lines
+    - empty_lines_except_namespace
+    - empty_lines_special
+    - no_empty_lines
+    - beginning_only
+    - ending_only
+
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Description: "Keeps track of empty lines around exception handling keywords."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+
+Layout/EmptyLinesAroundMethodBody:
+  Description: "Keeps track of empty lines around method bodies."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+
+Layout/EmptyLinesAroundModuleBody:
+  Description: "Keeps track of empty lines around module bodies."
+  StyleGuide: "#empty-lines-around-bodies"
+  Enabled: true
+  VersionAdded: "0.49"
+  EnforcedStyle: no_empty_lines
+  SupportedStyles:
+    - empty_lines
+    - empty_lines_except_namespace
+    - empty_lines_special
+    - no_empty_lines
+
+Layout/SpaceInsideBlockBraces:
+  Description: >-
+    Checks that block braces have or don't have surrounding space.
+    For blocks taking parameters, checks that the left brace has
+    or doesn't have trailing space.
+  Enabled: true
+  VersionAdded: "0.49"
+  EnforcedStyle: space
+  SupportedStyles:
+    - space
+    - no_space
+  EnforcedStyleForEmptyBraces: no_space
+  SupportedStylesForEmptyBraces:
+    - space
+    - no_space
+  # Space between `{` and `|`. Overrides `EnforcedStyle` if there is a conflict.
+  SpaceBeforeBlockParameters: true
+
+Layout/SpaceInsideHashLiteralBraces:
+  Description: "Use spaces inside hash literal braces - or don't."
+  StyleGuide: "#spaces-braces"
+  Enabled: true
+  VersionAdded: "0.49"
+  EnforcedStyle: space
+  SupportedStyles:
+    - space
+    - no_space
+    # 'compact' normally requires a space inside hash braces, with the exception
+    # that successive left braces or right braces are collapsed together
+    - compact
+  EnforcedStyleForEmptyBraces: no_space
+  SupportedStylesForEmptyBraces:
+    - space
+    - no_space
+
+Layout/SpaceInsideParens:
+  Description: "No spaces after ( or before )."
+  StyleGuide: "#spaces-braces"
+  Enabled: true
+  VersionAdded: "0.49"
+  VersionChanged: "1.22"
+  EnforcedStyle: no_space
+  SupportedStyles:
+    - space
+    - compact
+    - no_space
+
+Lint/ShadowingOuterLocalVariable:
+  Description: >-
+    Do not use the same name as outer local variable
+    for block arguments or block local variables.
+  Enabled: true
+  VersionAdded: "0.9"
+
+Style/RedundantReturn:
+  Description: "Don't use return where it's not required."
+  StyleGuide: "#no-explicit-return"
+  Enabled: true
+  VersionAdded: "0.10"
+  VersionChanged: "0.14"
+  # When `true` allows code like `return x, y`.
+  AllowMultipleReturnValues: false
+
+Style/NegatedIf:
+  Description: >-
+    Favor unless over if for negative conditions
+    (or control flow or).
+  StyleGuide: "#unless-for-negatives"
+  Enabled: true
+  VersionAdded: "0.20"
+  VersionChanged: "0.48"
+  EnforcedStyle: both
+  SupportedStyles:
+    # both: prefix and postfix negated `if` should both use `unless`
+    # prefix: only use `unless` for negated `if` statements positioned before the body of the statement
+    # postfix: only use `unless` for negated `if` statements positioned after the body of the statement
+    - both
+    - prefix
+    - postfix
+
+Style/SymbolProc:
+  Description: "Use symbols as procs instead of blocks when possible."
+  Enabled: true
+  Safe: false
+  VersionAdded: "0.26"
+  VersionChanged: "1.64"
+  AllowMethodsWithArguments: false
+  # A list of method names to be always allowed by the check.
+  # The names should be fairly unique, otherwise you'll end up ignoring lots of code.
+  AllowedMethods:
+    - define_method
+  AllowedPatterns: []
+  AllowComments: false
+
+Layout/CaseIndentation:
+  Description: "Indentation of when in a case/(when|in)/[else/]end."
+  StyleGuide: "#indent-when-to-case"
+  Enabled: true
+  VersionAdded: "0.49"
+  VersionChanged: "1.16"
+  EnforcedStyle: case
+  SupportedStyles:
+    - case
+    - end
+  IndentOneStep: false
+  # By default the indentation width from `Layout/IndentationWidth` is used,
+  # but it can be overridden by setting this parameter.
+  # This only matters if `IndentOneStep` is `true`.
+  IndentationWidth: ~
+
+Layout/ClassStructure:
+  Description: "Enforces a configured order of definitions within a class body."
+  StyleGuide: "#consistent-classes"
+  Enabled: false
+  SafeAutoCorrect: false
+  VersionAdded: "0.52"
+  VersionChanged: "1.53"
+  Categories:
+    module_inclusion:
+      - include
+      - prepend
+      - extend
+  ExpectedOrder:
+    - module_inclusion
+    - constants
+    - public_class_methods
+    - initializer
+    - public_methods
+    - protected_methods
+    - private_methods
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 20
