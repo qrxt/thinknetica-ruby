@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
 class Station
+  # rubocop:disable Style/ClassVars
+  @@stations = []
+  # rubocop:enable Style/ClassVars
+
+  class << self
+    def all
+      @@stations
+    end
+  end
+
   attr_reader :name, :trains
 
   def initialize(name)
     @name = name
     @trains = []
+    @@stations << self
   end
 
   def add_train(train)
