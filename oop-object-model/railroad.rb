@@ -169,6 +169,12 @@ class Railroad
 
     train = type == 'passenger' ? PassengerTrain.new(number) : CargoTrain.new(number)
 
+    puts 'Введите название производителя:'
+
+    manufacturer = gets.chomp
+
+    train.assign_manufacturer(manufacturer)
+
     @trains << train
 
     puts "\nСоздан поезд: #{train.info}\n\n"
@@ -312,6 +318,12 @@ class Railroad
     carriage_number = gets.chomp
 
     carriage = train.is_a?(PassengerTrain) ? PassengerCarriage.new(carriage_number) : CargoCarriage.new(carriage_number)
+
+    puts 'Введите название производителя вагона:'
+
+    manufacturer = gets.chomp
+
+    carriage.assign_manufacturer(manufacturer)
 
     train.add_carriage(carriage)
 

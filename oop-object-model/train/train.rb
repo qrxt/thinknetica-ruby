@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require_relative '../manufacturer'
+
 class Train
+  include Manufacturer
   attr_reader :number, :carriages, :current_route, :speed
 
   def initialize(number)
@@ -66,7 +69,7 @@ class Train
   end
 
   def info
-    "#{self.class} #{@number}"
+    "#{self.class} #{@number} (#{manufacturer})"
   end
 
   def add_carriage(carriage)
