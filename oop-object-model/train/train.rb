@@ -6,6 +6,16 @@ class Train
   include Manufacturer
   attr_reader :number, :carriages, :current_route, :speed
 
+  # rubocop:disable Style/ClassVars
+  @@trains = []
+  # rubocop:enable Style/ClassVars
+
+  class << self
+    def find(number)
+      @@trains.find { |train| train.number == number }
+    end
+  end
+
   def initialize(number)
     raise 'Train не может быть инициализирован напрямую' if instance_of?(Train)
 
@@ -13,6 +23,8 @@ class Train
     @carriages = []
 
     @speed = 0
+
+    @@trains << self
   end
 
   def start

@@ -181,4 +181,20 @@ class TestTrain < Test::Unit::TestCase
     assert_equal('C', train.current_station.name)
     assert_equal('C', train.next_station.name)
   end
+
+  # В классе Train создать метод класса find,
+  # который принимает номер поезда (указанный при его создании) и
+  def test_train_find
+    train1 = PassengerTrain.new('1')
+    train2 = CargoTrain.new('2')
+
+    assert_equal(train1, Train.find('1'))
+    assert_equal(train2, Train.find('2'))
+  end
+
+  # Метод класса find возвращает объект поезда по номеру или nil,
+  # если поезд с таким номером не найден.
+  def test_train_find_nil
+    assert_equal(nil, Train.find('3'))
+  end
 end
