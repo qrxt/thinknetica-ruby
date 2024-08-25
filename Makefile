@@ -93,3 +93,15 @@ test-4:
 	ruby ./oop-inheritance/route/route_test.rb
 	ruby ./oop-inheritance/train/passenger_train_test.rb
 	ruby ./oop-inheritance/train/cargo_train_test.rb
+
+# 5
+
+run-5:
+	irb -r ./oop-object-model/main.rb
+
+test-5:
+	ruby ./oop-object-model/train/train_test.rb
+	ruby ./oop-object-model/station/station_test.rb
+	ruby ./oop-object-model/route/route_test.rb
+	ruby ./oop-object-model/train/passenger_train_test.rb
+	ruby ./oop-object-model/train/cargo_train_test.rb
