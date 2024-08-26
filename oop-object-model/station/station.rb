@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require_relative '../utils/instance_counter/instance_counter'
+
 class Station
+  include InstanceCounter
+
   # rubocop:disable Style/ClassVars
   @@stations = []
   # rubocop:enable Style/ClassVars
@@ -17,6 +21,7 @@ class Station
     @name = name
     @trains = []
     @@stations << self
+    register_instance
   end
 
   def add_train(train)

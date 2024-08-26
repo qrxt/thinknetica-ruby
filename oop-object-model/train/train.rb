@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require_relative '../manufacturer'
+require_relative '../utils/instance_counter/instance_counter'
 
 class Train
   include Manufacturer
+  include InstanceCounter
+
   attr_reader :number, :carriages, :current_route, :speed
 
   # rubocop:disable Style/ClassVars
@@ -25,6 +28,7 @@ class Train
     @speed = 0
 
     @@trains << self
+    register_instance
   end
 
   def start
