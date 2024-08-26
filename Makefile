@@ -105,3 +105,4 @@ test-5:
 	ruby ./oop-object-model/route/route_test.rb
 	ruby ./oop-object-model/train/passenger_train_test.rb
 	ruby ./oop-object-model/train/cargo_train_test.rb
+	ruby ./oop-object-model/utils/instance_counter/instance_counter_test.rb
