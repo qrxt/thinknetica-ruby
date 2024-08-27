@@ -169,11 +169,7 @@ class Railroad
 
     train = type == 'passenger' ? PassengerTrain.new(number) : CargoTrain.new(number)
 
-    puts 'Введите название производителя:'
-
-    manufacturer = gets.chomp
-
-    train.assign_manufacturer(manufacturer)
+    train.manufacturer = prompt_for_manufacturer
 
     @trains << train
 
@@ -319,11 +315,7 @@ class Railroad
 
     carriage = train.is_a?(PassengerTrain) ? PassengerCarriage.new(carriage_number) : CargoCarriage.new(carriage_number)
 
-    puts 'Введите название производителя вагона:'
-
-    manufacturer = gets.chomp
-
-    carriage.assign_manufacturer(manufacturer)
+    carriage.manufacturer = prompt_for_manufacturer
 
     train.add_carriage(carriage)
 
@@ -478,6 +470,12 @@ class Railroad
     end
 
     station
+  end
+
+  def prompt_for_manufacturer
+    puts 'Введите название производителя:'
+
+    gets.chomp
   end
 
   attr_accessor :page, :is_running

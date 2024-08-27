@@ -95,7 +95,6 @@ test-4:
 	ruby ./4-oop-inheritance/train/cargo_train_test.rb
 
 # 5
-
 run-5:
 	irb -r ./5-oop-object-model/main.rb
 
@@ -104,7 +103,6 @@ test-5:
 
 
 # 6
-
 run-6:
 	irb -r ./6-exceptions/main.rb
 
