@@ -13,7 +13,7 @@ class TestTrain < Test::Unit::TestCase
     assert_equal('001', passenger_train.number)
   end
 
-  def test_add_passenger_carriage
+  def test_train_add_passenger_carriage
     passenger_train = PassengerTrain.new('001')
     passenger_carriage = PassengerCarriage.new('1')
 
@@ -24,7 +24,7 @@ class TestTrain < Test::Unit::TestCase
     assert_equal([passenger_carriage], passenger_train.carriages)
   end
 
-  def test_add_cargo_carriage
+  def test_train_add_cargo_carriage
     passenger_train = PassengerTrain.new('001')
     cargo_carriage = CargoCarriage.new('1')
 

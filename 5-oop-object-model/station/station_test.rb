@@ -8,7 +8,7 @@ require_relative 'station'
 
 class TestStation < Test::Unit::TestCase
   # Имеет название, которое указывается при ее создании
-  def test_initial
+  def test_station_initial
     station = Station.new('A')
 
     assert_equal('A', station.name)

@@ -10,7 +10,7 @@ require_relative '../carriage/passenger_carriage'
 class TestTrain < Test::Unit::TestCase
   # Имеет номер (произвольная строка) и тип (грузовой, пассажирский) и количество вагонов,
   # эти данные указываются при создании экземпляра класса
-  def test_initial
+  def test_train_initial
     passenger_train = PassengerTrain.new('001')
     cargo_train = CargoTrain.new('002')
 
@@ -185,11 +185,11 @@ class TestTrain < Test::Unit::TestCase
   # В классе Train создать метод класса find,
   # который принимает номер поезда (указанный при его создании) и
   def test_train_find
-    train1 = PassengerTrain.new('1')
-    train2 = CargoTrain.new('2')
+    train1 = PassengerTrain.new('9991')
+    train2 = CargoTrain.new('9992')
 
-    assert_equal(train1, Train.find('1'))
-    assert_equal(train2, Train.find('2'))
+    assert_equal(train1, Train.find('9991'))
+    assert_equal(train2, Train.find('9992'))
   end
 
   # Метод класса find возвращает объект поезда по номеру или nil,

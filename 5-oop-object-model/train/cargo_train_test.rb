@@ -7,13 +7,13 @@ require_relative '../carriage/passenger_carriage'
 require_relative '../carriage/cargo_carriage'
 
 class TestTrain < Test::Unit::TestCase
-  def test_initial
+  def test_cargo_train_initial
     cargo_train = CargoTrain.new('001')
 
     assert_equal('001', cargo_train.number)
   end
 
-  def test_add_cargo_carriage
+  def test_cargo_add_cargo_carriage
     cargo_train = CargoTrain.new('001')
     cargo_carriage = CargoCarriage.new('1')
 
@@ -24,7 +24,7 @@ class TestTrain < Test::Unit::TestCase
     assert_equal([cargo_carriage], cargo_train.carriages)
   end
 
-  def test_add_passenger_carriage
+  def test_cant_add_passenger_carriage
     cargo_train = CargoTrain.new('001')
     passenger_carriage = PassengerCarriage.new('1')
 
