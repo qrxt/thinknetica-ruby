@@ -100,9 +100,4 @@ run-5:
 	irb -r ./5-oop-object-model/main.rb
 
 test-5:
-	ruby ./5-oop-object-model/train/train_test.rb
-	ruby ./5-oop-object-model/station/station_test.rb
-	ruby ./5-oop-object-model/route/route_test.rb
-	ruby ./5-oop-object-model/train/passenger_train_test.rb
-	ruby ./5-oop-object-model/train/cargo_train_test.rb
-	ruby ./5-oop-object-model/utils/instance_counter/instance_counter_test.rb
+	ruby -Itest 5-oop-object-model/tests.rb
