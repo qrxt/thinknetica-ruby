@@ -15,9 +15,9 @@ AllCops:
     - "tmp/**/*"
     - "vendor/**/*"
     - ".git/**/*"
-    - "basics-1/**/*"
-    - "basics-2/**/*"
-    - "oop-basics/**/*"
+    - "1-basics-1/**/*"
+    - "2-basics-2/**/*"
+    - "3-oop-basics/**/*"
       # Default formatter will be used if no `-f/--format` option is given.
   DefaultFormatter: progress
   # Cop names are displayed in offense messages by default. Change behavior
