@@ -101,3 +101,12 @@ run-5:
 
 test-5:
 	ruby -Itest 5-oop-object-model/tests.rb
+
+
+# 6
+
+run-6:
+	irb -r ./6-exceptions/main.rb
+
+test-6:
+	ruby -Itest ./6-exceptions/tests.rb
