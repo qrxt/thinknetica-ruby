@@ -85,7 +85,7 @@ class Train
   end
 
   def info
-    "#{self.class} #{@number} (#{manufacturer})"
+    "#{self.class} #{@number} (производитель: #{manufacturer})"
   end
 
   def add_carriage(carriage)
