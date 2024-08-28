@@ -11,15 +11,15 @@ class TestTrain < Test::Unit::TestCase
   # Имеет номер (произвольная строка) и тип (грузовой, пассажирский) и количество вагонов,
   # эти данные указываются при создании экземпляра класса
   def test_train_initial
-    passenger_train = PassengerTrain.new('001')
-    cargo_train = CargoTrain.new('002')
+    passenger_train = PassengerTrain.new('123-01')
+    cargo_train = CargoTrain.new('123-02')
 
-    assert_equal('001', passenger_train.number)
+    assert_equal('123-01', passenger_train.number)
     assert_equal([], passenger_train.carriages)
     assert_equal(nil, passenger_train.current_route)
     assert_equal(nil, passenger_train.current_station)
 
-    assert_equal('002', cargo_train.number)
+    assert_equal('123-02', cargo_train.number)
     assert_equal([], cargo_train.carriages)
     assert_equal(nil, cargo_train.current_route)
     assert_equal(nil, cargo_train.current_station)
@@ -29,7 +29,7 @@ class TestTrain < Test::Unit::TestCase
   # Может возвращать текущую скорость
   # Может тормозить (сбрасывать скорость до нуля)
   def test_set_speed
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
 
     assert_equal(0, train.speed)
 
@@ -46,7 +46,7 @@ class TestTrain < Test::Unit::TestCase
   # Может прицеплять/отцеплять вагоны
   # Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
   def test_carriages
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
     carriage = PassengerCarriage.new('1')
 
     train.add_carriage(carriage)
@@ -79,7 +79,7 @@ class TestTrain < Test::Unit::TestCase
   # Может принимать маршрут следования (объект класса Route).
   # При назначении маршрута поезду, поезд автоматически помещается на первую станцию в маршруте.
   def test_route_default_station
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
     route = Route.new('A-C', Station.new('A'), Station.new('C'))
 
     train.assign_route(route)
@@ -92,7 +92,7 @@ class TestTrain < Test::Unit::TestCase
   # Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   # Возвращать предыдущую станцию, текущую, следующую, на основе маршрута.
   def test_move_with_intermidiate
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
 
     route = Route.new('A-C', Station.new('A'), Station.new('C'))
     route.add_intermidiate_station(Station.new('B'))
@@ -129,7 +129,7 @@ class TestTrain < Test::Unit::TestCase
   end
 
   def test_move_without_intermidiate
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
     route = Route.new('A-C', Station.new('A'), Station.new('C'))
 
     train.assign_route(route)
@@ -153,7 +153,7 @@ class TestTrain < Test::Unit::TestCase
   end
 
   def test_move_backward_on_departure_station
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
 
     route = Route.new('A-C', Station.new('A'), Station.new('C'))
 
@@ -167,7 +167,7 @@ class TestTrain < Test::Unit::TestCase
   end
 
   def test_move_forward_on_arrival_station
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
 
     route = Route.new('A-C', Station.new('A'), Station.new('C'))
     route.add_intermidiate_station(Station.new('B'))
@@ -185,16 +185,16 @@ class TestTrain < Test::Unit::TestCase
   # В классе Train создать метод класса find,
   # который принимает номер поезда (указанный при его создании) и
   def test_train_find
-    train1 = PassengerTrain.new('9991')
-    train2 = CargoTrain.new('9992')
+    train1 = PassengerTrain.new('123-91')
+    train2 = CargoTrain.new('123-92')
 
-    assert_equal(train1, Train.find('9991'))
-    assert_equal(train2, Train.find('9992'))
+    assert_equal(train1, Train.find('123-91'))
+    assert_equal(train2, Train.find('123-92'))
   end
 
   # Метод класса find возвращает объект поезда по номеру или nil,
   # если поезд с таким номером не найден.
   def test_train_find_nil
-    assert_equal(nil, Train.find('3'))
+    assert_equal(nil, Train.find('123-00'))
   end
 end

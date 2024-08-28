@@ -2,10 +2,12 @@
 
 require_relative '../manufacturer'
 require_relative '../utils/instance_counter/instance_counter'
+require_relative '../utils/valid'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  include Valid
 
   attr_reader :number, :carriages, :current_route, :speed
 
@@ -23,8 +25,9 @@ class Train
     raise 'Train не может быть инициализирован напрямую' if instance_of?(Train)
 
     @number = number
-    @carriages = []
+    validate!
 
+    @carriages = []
     @speed = 0
 
     @@trains << self
@@ -85,11 +88,24 @@ class Train
   end
 
   def info
-    "#{self.class} #{@number} (производитель: #{manufacturer})"
+    manufacturer_string = manufacturer.empty? ? '' : "(производитель: #{manufacturer})"
+
+    "#{self.class} №#{@number} #{manufacturer_string}"
   end
 
   def add_carriage(carriage)
     @carriages << carriage if speed.zero?
+  end
+
+  def validate!
+    error_empty = 'Номера поезда обязателен'
+    error_incorrect_format = 'Номер поезда должен иметь формат: 3 цифры/буквы, необязательный дефис, 2 цифры/буквы'
+
+    raise error_empty if number.nil?
+
+    raise error_incorrect_format if number !~ /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
+
+    true
   end
 
   protected

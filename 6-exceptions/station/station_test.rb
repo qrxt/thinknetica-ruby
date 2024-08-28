@@ -20,8 +20,8 @@ class TestStation < Test::Unit::TestCase
   def test_add_train
     station = Station.new('A')
 
-    passenger_train = PassengerTrain.new('001')
-    cargo_train = CargoTrain.new('002')
+    passenger_train = PassengerTrain.new('123-01')
+    cargo_train = CargoTrain.new('123-02')
 
     assert_equal([], station.trains)
 
@@ -35,8 +35,8 @@ class TestStation < Test::Unit::TestCase
   def test_train_types
     station = Station.new('A')
 
-    passenger_train = PassengerTrain.new('001')
-    cargo_train = CargoTrain.new('002')
+    passenger_train = PassengerTrain.new('123-01')
+    cargo_train = CargoTrain.new('123-02')
 
     station.add_train(passenger_train)
     station.add_train(cargo_train)
@@ -54,14 +54,14 @@ class TestStation < Test::Unit::TestCase
     departure_station = Station.new('A')
     arrival_station = Station.new('B')
 
-    train = PassengerTrain.new('001')
+    train = PassengerTrain.new('123-01')
     route = Route.new('A-B', departure_station, arrival_station)
 
     train.assign_route(route)
 
     assert_equal([train], departure_station.trains)
 
-    departure_station.send('001')
+    departure_station.send('123-01')
 
     assert_equal([], departure_station.trains)
 

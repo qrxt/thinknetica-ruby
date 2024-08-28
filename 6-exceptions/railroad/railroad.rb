@@ -25,6 +25,7 @@ class Railroad
   include PageDisplay
   include PageManage
   include Seed
+
   attr_reader :trains, :stations, :routes
 
   def initialize

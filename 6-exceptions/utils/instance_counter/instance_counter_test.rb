@@ -10,8 +10,8 @@ require_relative '../../route/route'
 
 class TestInstanceCounter < Test::Unit::TestCase
   def test_instances
-    PassengerTrain.new('1')
-    CargoTrain.new('2')
+    PassengerTrain.new('123-01')
+    CargoTrain.new('123-02')
     station_a = Station.new('A')
     station_b = Station.new('B')
     Route.new('A-B', station_a, station_b)

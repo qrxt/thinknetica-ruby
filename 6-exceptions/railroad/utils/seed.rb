@@ -14,10 +14,10 @@ module Seed
     cargo_carriage = CargoCarriage.new('1')
     cargo_carriage.manufacturer = manufacturer
 
-    passenger_train = PassengerTrain.new('1')
+    passenger_train = PassengerTrain.new('123-01')
     passenger_train.manufacturer = manufacturer
 
-    cargo_train = CargoTrain.new('2')
+    cargo_train = CargoTrain.new('123-02')
     cargo_train.manufacturer = manufacturer
 
     passenger_train.add_carriage(passenger_carriage)
