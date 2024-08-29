@@ -67,4 +67,16 @@ class TestStation < Test::Unit::TestCase
 
     assert_equal([train], arrival_station.trains)
   end
+
+  def test_station_validate_name
+    assert_raise RuntimeError do
+      Station.new(nil)
+    end
+  end
+
+  def test_station_validate_name_len
+    assert_raise RuntimeError do
+      Station.new('')
+    end
+  end
 end
