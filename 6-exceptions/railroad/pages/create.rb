@@ -26,27 +26,37 @@ module PageCreate
   end
 
   def create_train
-    puts 'Создание поезда'
+    attempt_counter = 0
 
-    puts "Введите тип поезда (#{highlight('passenger')} или #{highlight('cargo')})"
+    begin
+      puts 'Создание поезда'
 
-    type = gets.chomp
+      puts "Введите тип поезда (#{highlight('passenger')} или #{highlight('cargo')})"
 
-    return unless %w[passenger cargo].include?(type)
+      type = gets.chomp
 
-    puts 'Введите номер поезда (строка):'
+      return unless %w[passenger cargo].include?(type)
 
-    number = gets.chomp
+      puts 'Введите номер поезда (строка):'
 
-    train = type == 'passenger' ? PassengerTrain.new(number) : CargoTrain.new(number)
+      number = gets.chomp
 
-    train.manufacturer = prompt_for_manufacturer
+      train = type == 'passenger' ? PassengerTrain.new(number) : CargoTrain.new(number)
 
-    @trains << train
+      train.manufacturer = prompt_for_manufacturer
 
-    puts "\nСоздан поезд: #{train.info}\n\n"
+      @trains << train
 
-    @page = 'create'
+      puts "\nСоздан поезд: #{train.info}\n\n"
+
+      @page = 'create'
+    rescue RuntimeError => e
+      attempt_counter += 1
+
+      puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"
+
+      attempt_counter < 3 ? retry : raise
+    end
   end
 
   def create_station
