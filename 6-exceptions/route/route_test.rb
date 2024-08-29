@@ -39,4 +39,35 @@ class TestRoute < Test::Unit::TestCase
 
     assert_equal([departure_station, arrival_station], route.stations)
   end
+
+  def test_route_validate_name
+    assert_raise RuntimeError do
+      Route.new(nil, nil, nil)
+    end
+  end
+
+  def test_route_validate_no_departure_station
+    assert_raise RuntimeError do
+      Route.new('A-B', nil, Station.new('A'))
+    end
+  end
+
+  def test_route_validate_no_arrival_station
+    assert_raise RuntimeError do
+      Route.new('A-B', Station.new('A'), nil)
+    end
+  end
+
+  def test_route_validate_stations_type
+    assert_raise RuntimeError do
+      Route.new('A-B', '', '')
+    end
+  end
+
+  def test_route_validate_same_station
+    assert_raise RuntimeError do
+      station = Station.new('A')
+      Route.new('A-B', station, station)
+    end
+  end
 end
