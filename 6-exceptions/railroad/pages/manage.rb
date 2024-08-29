@@ -12,6 +12,9 @@ MENU_MANAGE = {
   main: 'вернуться на главную'
 }.freeze
 
+NO_TRAINS_AVAILABLE_ERROR = 'Нет доступных поездов'
+NO_ROUTES_AVAILABLE_ERROR = 'Нет доступных маршрутов'
+
 module PageManage
   include Prompt
   include Highlight
@@ -35,6 +38,13 @@ module PageManage
 
   def manage_add_carriage
     puts 'Прицепка вагона'
+
+    if trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
 
     puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
 
@@ -62,6 +72,13 @@ module PageManage
   def manage_remove_carriage
     puts 'Отцепка вагона'
 
+    if trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
+
     puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
 
     puts 'Введите номер поезда для отцепки вагона:'
@@ -87,6 +104,13 @@ module PageManage
 
   def manage_add_intermidiate_station
     puts 'Добавление промежуточной станции'
+
+    if trains.empty?
+      puts NO_ROUTES_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
 
     puts "Сейчас доступны следующие маршруты: #{@routes.map(&:name).join(', ')}"
 
@@ -114,6 +138,13 @@ module PageManage
 
     fitting_trains = @trains.reject(&:current_route)
 
+    if fitting_trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
+
     puts "Сейчас доступны следующие поезда: #{fitting_trains.map(&:number).join(', ')}"
 
     train = prompt_for_train
@@ -137,6 +168,13 @@ module PageManage
 
   def manage_move_train
     puts 'Передвижение поезда'
+
+    if trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
 
     puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
 

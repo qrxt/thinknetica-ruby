@@ -10,6 +10,8 @@ MENU_CREATE = {
   main: 'вернуться на главную'
 }.freeze
 
+NOT_ENOUGH_STATIONS_ERROR = 'Недостаточно станций, чтобы создать маршрут'
+
 module PageCreate
   include Prompt
   include Highlight
@@ -60,52 +62,71 @@ module PageCreate
   end
 
   def create_station
-    puts 'Создание станции'
+    attempt_counter = 0
 
-    puts 'Введите название станции:'
+    begin
+      puts 'Создание станции'
 
-    name = gets.chomp
+      puts 'Введите название станции:'
 
-    station = Station.new(name)
+      name = gets.chomp
 
-    @stations << station
+      station = Station.new(name)
 
-    puts "\nСоздана станция: #{station.name}\n\n"
+      @stations << station
 
-    @page = 'create'
+      puts "\nСоздана станция: #{station.name}\n\n"
+
+      @page = 'create'
+    rescue RuntimeError => e
+      attempt_counter += 1
+
+      puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"
+
+      attempt_counter < 3 ? retry : raise
+    end
   end
 
   def create_route
-    puts 'Создание маршрута'
+    attempt_counter = 0
 
-    puts "Сейчас доступны следующие станции: #{@stations.map(&:name).join(', ')}"
+    begin
+      puts 'Создание маршрута'
 
-    puts 'Введите название начальной станции:'
+      if stations.size < 2
+        puts NOT_ENOUGH_STATIONS_ERROR
 
-    departure_station_name = gets.chomp
+        @page = 'create'
+        return
+      end
 
-    puts 'Введите название конечной станции:'
+      puts "Сейчас доступны следующие станции: #{@stations.map(&:name).join(', ')}"
 
-    arrival_station_name = gets.chomp
+      puts 'Введите название начальной станции:'
 
-    departure_station = @stations.find { |station| station.name == departure_station_name }
-    arrival_station = @stations.find { |station| station.name == arrival_station_name }
+      departure_station_name = gets.chomp
 
-    if !departure_station || !arrival_station
-      puts 'Начальная или конечная станция не найдена'
+      puts 'Введите название конечной станции:'
+
+      arrival_station_name = gets.chomp
+
+      departure_station = @stations.find { |station| station.name == departure_station_name }
+      arrival_station = @stations.find { |station| station.name == arrival_station_name }
+
+      route = Route.new("#{departure_station_name}-#{arrival_station_name}", departure_station, arrival_station)
+
+      @routes << route
+
+      puts "\nСоздан маршрут: #{route.name}\n"
+      puts "Промежуточные станции можно добавить через #{highlight('manage')}\n\n"
 
       @page = 'create'
+    rescue RuntimeError => e
+      attempt_counter += 1
 
-      return
+      puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"
+
+      attempt_counter < 3 ? retry : raise
     end
-
-    route = Route.new("#{departure_station_name}-#{arrival_station_name}", departure_station, arrival_station)
-
-    @routes << route
-
-    puts "\nСоздан маршрут: #{route.name}\n"
-    puts "Промежуточные станции можно добавить через #{highlight('manage')}\n\n"
-
-    @page = 'create'
   end
 end
