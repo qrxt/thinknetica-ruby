@@ -197,4 +197,22 @@ class TestTrain < Test::Unit::TestCase
   def test_train_find_nil
     assert_equal(nil, Train.find('123-00'))
   end
+
+  def test_train_validate_number
+    assert_raise RuntimeError do
+      PassengerTrain.new(nil)
+    end
+  end
+
+  def test_train_validate_number_len
+    assert_raise RuntimeError do
+      PassengerTrain.new('')
+    end
+  end
+
+  def test_train_validate_format
+    assert_raise RuntimeError do
+      PassengerTrain.new('12-21')
+    end
+  end
 end
