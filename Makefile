@@ -108,3 +108,10 @@ run-6:
 
 test-6:
 	ruby -Itest ./6-exceptions/tests.rb
+
+# 7
+run-7:
+	irb -r ./7-blocks/main.rb
+
+test-7:
+	ruby -Itest ./7-blocks/tests.rb
