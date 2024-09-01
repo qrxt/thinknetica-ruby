@@ -9,12 +9,15 @@ MENU_MANAGE = {
   add_intermidiate_station: 'добавить маршруту дополнительную станцию',
   assign_route: 'назначить поезду маршрут',
   move_train: 'отправить поезд на следующую или предыдущую станцию',
+  occupy_volume: 'занять объем грузового вагона',
+  occupy_seat: 'занять место в пассажирском вагоне',
   main: 'вернуться на главную'
 }.freeze
 
 NO_TRAINS_AVAILABLE_ERROR = 'Нет доступных поездов'
 NO_ROUTES_AVAILABLE_ERROR = 'Нет доступных маршрутов'
 
+# rubocop:disable Metrics/ModuleLength
 module PageManage
   include Prompt
   include Highlight
@@ -26,6 +29,8 @@ module PageManage
       add_intermidiate_station
       assign_route
       move_train
+      occupy_volume
+      occupy_seat
     ]
   end
 
@@ -203,4 +208,75 @@ module PageManage
 
     @page = 'manage'
   end
+
+  def manage_occupy_volume
+    puts 'Изменение объема грузового вагона'
+
+    if trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
+
+    fitting_trains = @trains.select { |train| train.is_a?(CargoTrain) }.map(&:number)
+
+    puts "Сейчас доступны следующие поезда: #{fitting_trains.join(', ')}"
+
+    puts 'Введите номер поезда для изменения объема грузового вагона:'
+
+    train = prompt_for_train
+
+    return unless train
+
+    puts "У этого поезда есть следующие вагоны: #{train.carriages.map(&:number).join(', ')}"
+
+    carriage = prompt_for_carriage(train.carriages)
+
+    return unless carriage
+
+    puts "Введите занимаемый объем для добавления груза (сейчас #{carriage.occupied_volume} / #{carriage.volume}):"
+
+    volume = gets.chomp.to_i
+
+    carriage.fill(volume)
+
+    puts "Текущий объем: #{carriage.occupied_volume} / #{carriage.volume}"
+
+    @page = 'manage'
+  end
+
+  def manage_occupy_seat
+    puts 'Занятие места в пассажирском вагоне'
+
+    if trains.empty?
+      puts NO_TRAINS_AVAILABLE_ERROR
+
+      @page = 'manage'
+      return
+    end
+
+    fitting_trains = @trains.select { |train| train.is_a?(PassengerTrain) }.map(&:number)
+
+    puts "Сейчас доступны следующие поезда: #{fitting_trains.join(', ')}"
+
+    puts 'Введите номер поезда для занятия места в пассажирском вагоне:'
+
+    train = prompt_for_train
+
+    return unless train
+
+    puts "У этого поезда есть следующие вагоны: #{train.carriages.map(&:number).join(', ')}"
+
+    carriage = prompt_for_carriage(train.carriages)
+
+    return unless carriage
+
+    carriage.occupy_seat
+
+    puts "Теперь в вагоне занято #{carriage.occupied_seats} из #{carriage.seats_number} мест"
+
+    @page = 'manage'
+  end
 end
+# rubocop:enable Metrics/ModuleLength

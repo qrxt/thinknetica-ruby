@@ -65,6 +65,8 @@ class Railroad
       when 'manage_add_intermidiate_station' then manage_add_intermidiate_station
       when 'manage_assign_route' then manage_assign_route
       when 'manage_move_train' then manage_move_train
+      when 'manage_occupy_volume' then manage_occupy_volume
+      when 'manage_occupy_seat' then manage_occupy_seat
 
       else not_found
 

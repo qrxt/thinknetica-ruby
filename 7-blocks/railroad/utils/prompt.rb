@@ -66,4 +66,20 @@ module Prompt
 
     gets.chomp.to_i
   end
+
+  def prompt_for_carriage(carriages)
+    carriage_number = gets.chomp
+
+    carriage = carriages.find { |current_carriage| current_carriage.number == carriage_number }
+
+    unless carriage
+      puts 'Вагон с таким номером не найден'
+
+      @page = 'manage'
+
+      return nil
+    end
+
+    carriage
+  end
 end
