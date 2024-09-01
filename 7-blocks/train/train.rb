@@ -88,9 +88,9 @@ class Train
   end
 
   def info
-    manufacturer_string = manufacturer.empty? ? '' : "(производитель: #{manufacturer})"
+    manufacturer_string = manufacturer.empty? ? '' : "производитель: #{manufacturer}"
 
-    "#{self.class} №#{@number} #{manufacturer_string}"
+    "Поезд №#{@number}: тип: #{type_label}, кол-во вагонов: #{@carriages.size}, #{manufacturer_string}"
   end
 
   def add_carriage(carriage)

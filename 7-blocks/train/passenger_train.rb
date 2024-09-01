@@ -8,6 +8,10 @@ class PassengerTrain < Train
     super if carriage.is_a?(PassengerCarriage)
   end
 
+  def type_label
+    'пассажирский'
+  end
+
   protected
 
   # метод для внутреннего использования, снаружи не используется

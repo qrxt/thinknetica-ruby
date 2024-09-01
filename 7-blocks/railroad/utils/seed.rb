@@ -10,9 +10,11 @@ module Seed
 
     passenger_carriage = PassengerCarriage.new('1', 36)
     passenger_carriage.manufacturer = manufacturer
+    passenger_carriage.occupy_seat
 
     cargo_carriage = CargoCarriage.new('1', 10_000)
     cargo_carriage.manufacturer = manufacturer
+    cargo_carriage.fill(7_500)
 
     passenger_train = PassengerTrain.new('123-01')
     passenger_train.manufacturer = manufacturer

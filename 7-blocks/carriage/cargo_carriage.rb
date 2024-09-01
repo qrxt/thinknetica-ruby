@@ -20,4 +20,12 @@ class CargoCarriage < Carriage
   def available_volume
     @volume - @occupied_volume
   end
+
+  def type_label
+    'грузовой'
+  end
+
+  def info
+    "Вагон №#{@number}, тип: #{type_label}, занятый объем: #{@occupied_volume}, доступный объем: #{available_volume}"
+  end
 end

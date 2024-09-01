@@ -8,6 +8,10 @@ class CargoTrain < Train
     super if carriage.is_a?(CargoCarriage)
   end
 
+  def type_label
+    'грузовой'
+  end
+
   protected
 
   # метод для внутреннего использования, снаружи не используется

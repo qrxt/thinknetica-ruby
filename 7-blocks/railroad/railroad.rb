@@ -37,6 +37,7 @@ class Railroad
     @routes = []
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def menu
     while @is_running
       break if @page == 'stop'
@@ -51,6 +52,7 @@ class Railroad
       when 'display_trains' then display_trains
       when 'display_stations' then display_stations
       when 'display_routes' then display_routes
+      when 'display_report' then display_report
 
       when 'create' then create
       when 'create_train' then create_train
@@ -69,6 +71,7 @@ class Railroad
       end
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 

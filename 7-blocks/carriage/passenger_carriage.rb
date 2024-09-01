@@ -19,4 +19,12 @@ class PassengerCarriage < Carriage
   def free_seats
     @seats_number - @occupied_seats
   end
+
+  def type_label
+    'пассажирский'
+  end
+
+  def info
+    "Вагон №#{@number}, тип: #{type_label}, занято мест: #{@occupied_seats}, свободно мест: #{free_seats}"
+  end
 end
