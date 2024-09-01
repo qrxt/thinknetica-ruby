@@ -58,7 +58,14 @@ module PageManage
 
     carriage_number = gets.chomp
 
-    carriage = train.is_a?(PassengerTrain) ? PassengerCarriage.new(carriage_number) : CargoCarriage.new(carriage_number)
+    seats = prompt_for_seats if train.is_a?(PassengerTrain)
+    volume = prompt_for_volume if train.is_a?(CargoTrain)
+
+    carriage = if train.is_a?(PassengerTrain)
+                 PassengerCarriage.new(carriage_number, seats)
+               else
+                 CargoCarriage.new(carriage_number, volume)
+               end
 
     carriage.manufacturer = prompt_for_manufacturer
 

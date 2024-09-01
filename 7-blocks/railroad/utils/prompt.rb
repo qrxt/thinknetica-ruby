@@ -54,4 +54,16 @@ module Prompt
 
     gets.chomp
   end
+
+  def prompt_for_seats
+    puts 'Введите количество посадочных мест вагона:'
+
+    gets.chomp.to_i
+  end
+
+  def prompt_for_volume
+    puts 'Введите объем вагона:'
+
+    gets.chomp.to_i
+  end
 end
