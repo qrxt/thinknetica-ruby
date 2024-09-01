@@ -215,4 +215,20 @@ class TestTrain < Test::Unit::TestCase
       PassengerTrain.new('12-21')
     end
   end
+
+  def test_train_each_carriage
+    train = PassengerTrain.new('123-01')
+    carriage1 = PassengerCarriage.new('1', 36)
+    carriage2 = PassengerCarriage.new('2', 36)
+
+    train.add_carriage(carriage1)
+    train.add_carriage(carriage2)
+
+    expected = [carriage1, carriage2]
+    current = []
+
+    train.each_carriage { |carriage| current << carriage }
+
+    assert_equal(expected, current)
+  end
 end

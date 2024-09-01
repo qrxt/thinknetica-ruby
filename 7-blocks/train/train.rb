@@ -97,6 +97,10 @@ class Train
     @carriages << carriage if speed.zero?
   end
 
+  def each_carriage(&block)
+    @carriages.each(&block)
+  end
+
   def validate!
     error_empty = 'Номера поезда обязателен'
     error_incorrect_format = 'Номер поезда должен иметь формат: 3 цифры/буквы, необязательный дефис, 2 цифры/буквы'
