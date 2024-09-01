@@ -46,6 +46,10 @@ class Station
     current_train.go_next_station
   end
 
+  def each_train(&block)
+    @trains.each(&block)
+  end
+
   def validate!
     error_empty = 'Название станции обязательно'
     error_invalid_len = 'Длина названия должна быть более одного символа'

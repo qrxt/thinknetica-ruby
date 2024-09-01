@@ -79,4 +79,21 @@ class TestStation < Test::Unit::TestCase
       Station.new('')
     end
   end
+
+  def test_station_each_train
+    station = Station.new('A')
+
+    passenger_train = PassengerTrain.new('123-01')
+    cargo_train = CargoTrain.new('123-02')
+
+    station.add_train(passenger_train)
+    station.add_train(cargo_train)
+
+    expected = [passenger_train, cargo_train]
+    current = []
+
+    station.each_train { |train| current << train }
+
+    assert_equal(expected, current)
+  end
 end
