@@ -47,7 +47,7 @@ class TestTrain < Test::Unit::TestCase
   # Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
   def test_carriages
     train = PassengerTrain.new('123-01')
-    carriage = PassengerCarriage.new('1')
+    carriage = PassengerCarriage.new('1', 36)
 
     train.add_carriage(carriage)
 
@@ -71,7 +71,7 @@ class TestTrain < Test::Unit::TestCase
 
     # Невозможно прицепить вагоны на ходу
 
-    train.add_carriage(PassengerCarriage.new('2'))
+    train.add_carriage(PassengerCarriage.new('2', 36))
 
     assert_equal([carriage], train.carriages)
   end

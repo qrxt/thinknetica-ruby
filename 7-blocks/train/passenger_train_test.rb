@@ -15,7 +15,7 @@ class TestTrain < Test::Unit::TestCase
 
   def test_add_passenger_carriage
     passenger_train = PassengerTrain.new('123-01')
-    passenger_carriage = PassengerCarriage.new('1')
+    passenger_carriage = PassengerCarriage.new('1', 36)
 
     assert_equal([], passenger_train.carriages)
 
@@ -26,7 +26,7 @@ class TestTrain < Test::Unit::TestCase
 
   def test_passenger_add_cargo_carriage
     passenger_train = PassengerTrain.new('123-01')
-    cargo_carriage = CargoCarriage.new('1')
+    cargo_carriage = CargoCarriage.new('1', 10_000)
 
     assert_equal([], passenger_train.carriages)
 

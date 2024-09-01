@@ -8,10 +8,10 @@ module Seed
     station_b = Station.new('B')
     station_c = Station.new('C')
 
-    passenger_carriage = PassengerCarriage.new('1')
+    passenger_carriage = PassengerCarriage.new('1', 36)
     passenger_carriage.manufacturer = manufacturer
 
-    cargo_carriage = CargoCarriage.new('1')
+    cargo_carriage = CargoCarriage.new('1', 10_000)
     cargo_carriage.manufacturer = manufacturer
 
     passenger_train = PassengerTrain.new('123-01')
