@@ -30,16 +30,15 @@ module PageDisplay
     puts "Список поездов:\n"
 
     @trains.each do |train|
-      train_carriages = train.carriages.map(&:number).join(', ')
-      train_carriages_string = train.carriages.any? ? "(Вагоны: #{train_carriages})" : ''
-
       train_route_string = if train.current_route
                              "(Маршрут: #{train.current_route.info}, текущая станция: #{train.current_station.name})"
                            else
                              ''
                            end
 
-      puts "\nПоезд #{train.info} #{train_carriages_string} #{train_route_string}"
+      puts "\n#{train.info} #{train_route_string}"
+
+      train.each_carriage { |carriage| puts "\t#{carriage.info}" }
     end
 
     @page = 'display'
@@ -49,10 +48,9 @@ module PageDisplay
     puts "Список станций:\n"
 
     @stations.each do |station|
-      trains_on_station = station.trains.map(&:number).join(', ')
-      trains_on_station_string = station.trains.any? ? "(Поезда на станции: #{trains_on_station})" : ''
+      puts "\nСтанция #{station.name}\n"
 
-      puts "\nСтанция #{station.name} #{trains_on_station_string}\n"
+      station.each_train { |train| puts "\t#{train.info}" }
     end
 
     @page = 'display'
