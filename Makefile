@@ -115,3 +115,10 @@ run-7:
 
 test-7:
 	ruby -Itest ./7-blocks/tests.rb
+
+# 8
+run-8:
+	irb -r ./8-rubocop/main.rb
+
+test-8:
+	ruby -Itest ./8-rubocop/tests.rb
