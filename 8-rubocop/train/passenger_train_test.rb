@@ -11,6 +11,9 @@ class TestTrain < Test::Unit::TestCase
     passenger_train = PassengerTrain.new('123-01')
 
     assert_equal('123-01', passenger_train.number)
+    assert_equal([], passenger_train.carriages)
+    assert_equal(nil, passenger_train.current_route)
+    assert_equal(nil, passenger_train.current_station)
   end
 
   def test_add_passenger_carriage

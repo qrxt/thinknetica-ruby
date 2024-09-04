@@ -73,6 +73,8 @@ class Train
     current_station.remove_train(number)
     @current_station_index += 1
     current_station.add_train(self)
+
+    current_station
   end
 
   def go_previous_station
@@ -81,6 +83,8 @@ class Train
     current_station.remove_train(number)
     @current_station_index -= 1
     current_station.add_train(self)
+
+    current_station
   end
 
   def remove_carriage(number)
