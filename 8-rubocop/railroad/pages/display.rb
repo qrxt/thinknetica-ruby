@@ -29,6 +29,12 @@ module PageDisplay
   def display_trains
     puts "Список поездов:\n"
 
+    print_trains_list
+
+    @page = 'display'
+  end
+
+  def print_trains_list
     @trains.each do |train|
       train_route_string = if train.current_route
                              "(Маршрут: #{train.current_route.info}, текущая станция: #{train.current_station.name})"
@@ -40,8 +46,6 @@ module PageDisplay
 
       train.each_carriage { |carriage| puts "\t#{carriage.info}" }
     end
-
-    @page = 'display'
   end
 
   def display_stations
@@ -73,6 +77,12 @@ module PageDisplay
 
     puts no_data_notice if @stations.empty?
 
+    print_stations_list
+
+    @page = 'display'
+  end
+
+  def print_stations_list
     @stations.each do |station|
       puts "Станция #{station.name}"
 
@@ -82,9 +92,5 @@ module PageDisplay
         train.each_carriage { |carriage| puts "\t\t#{carriage.info}" }
       end
     end
-
-    puts "\n"
-
-    @page = 'display'
   end
 end
