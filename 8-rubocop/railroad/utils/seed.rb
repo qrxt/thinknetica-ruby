@@ -1,41 +1,75 @@
 # frozen_string_literal: true
 
+MANUFACTURER = 'manufacturer01'
+
 module Seed
   def seed
-    manufacturer = 'manufacturer01'
+    create_objects
 
-    station_a = Station.new('A')
-    station_b = Station.new('B')
-    station_c = Station.new('C')
+    puts "\nОбъекты созданы. Подробнее в #{highlight('display')}.\n\n"
+    @page = 'main'
+  end
 
-    passenger_carriage = PassengerCarriage.new('1', 36)
-    passenger_carriage.manufacturer = manufacturer
-    passenger_carriage.occupy_seat
+  def create_passenger_carriage
+    carriage = PassengerCarriage.new('1', 36)
+    carriage.manufacturer = MANUFACTURER
+    carriage.occupy_seat
 
-    cargo_carriage = CargoCarriage.new('1', 10_000)
-    cargo_carriage.manufacturer = manufacturer
-    cargo_carriage.fill(7_500)
+    carriage
+  end
 
-    passenger_train = PassengerTrain.new('123-01')
-    passenger_train.manufacturer = manufacturer
+  def create_cargo_carriage
+    carriage = CargoCarriage.new('1', 10_000)
+    carriage.manufacturer = MANUFACTURER
+    carriage.fill(7_500)
 
-    cargo_train = CargoTrain.new('123-02')
-    cargo_train.manufacturer = manufacturer
+    carriage
+  end
 
-    passenger_train.add_carriage(passenger_carriage)
-    cargo_train.add_carriage(cargo_carriage)
+  def create_passenger_train(carriage)
+    train = PassengerTrain.new('123-01')
+    train.manufacturer = MANUFACTURER
+    train.add_carriage(carriage)
+
+    train
+  end
+
+  def create_cargo_train(carriage)
+    train = CargoTrain.new('123-02')
+    train.manufacturer = MANUFACTURER
+    train.add_carriage(carriage)
+
+    train
+  end
+
+  def create_route(stations, trains)
+    station_a, station_b, station_c = stations
 
     route = Route.new('A-C', station_a, station_c)
     route.add_intermidiate_station(station_b)
 
-    passenger_train.assign_route(route)
-    cargo_train.assign_route(route)
+    trains.each { |train| train.assign_route(route) }
 
-    @stations = [station_a, station_b, station_c]
+    route
+  end
+
+  def create_stations
+    [Station.new('A'), Station.new('B'), Station.new('C')]
+  end
+
+  def create_objects
+    stations = create_stations
+
+    passenger_carriage = create_passenger_carriage
+    cargo_carriage = create_cargo_carriage
+
+    passenger_train = create_passenger_train(passenger_carriage)
+    cargo_train = create_cargo_train(cargo_carriage)
+
+    route = create_route(stations, [passenger_train, cargo_train])
+
+    @stations = stations
     @trains = [passenger_train, cargo_train]
     @routes = [route]
-
-    puts "\nОбъекты созданы. Подробнее в #{highlight('display')}.\n\n"
-    @page = 'main'
   end
 end
