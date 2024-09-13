@@ -61,18 +61,6 @@ module PageCreate
     @page = 'create'
   end
 
-  def prompt_for_train_type
-    puts "Введите тип поезда (#{highlight('passenger')} или #{highlight('cargo')})"
-
-    gets.chomp
-  end
-
-  def prompt_for_train_number
-    puts 'Введите номер поезда (строка):'
-
-    gets.chomp
-  end
-
   def create_station
     attempt_counter = 0
 
@@ -134,20 +122,8 @@ module PageCreate
     @page = 'create'
   end
 
-  def prompt_for_departure_station
-    puts 'Введите название начальной станции:'
-
-    prompt_for_station
-  end
-
-  def prompt_for_arrival_station
-    puts 'Введите название конечной станции:'
-
-    prompt_for_station
-  end
-
   def check_no_stations
-    return if stations.size > 2
+    return unless stations.size < 2
 
     puts NOT_ENOUGH_STATIONS_ERROR
 

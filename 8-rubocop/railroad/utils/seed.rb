@@ -10,6 +10,8 @@ module Seed
     @page = 'main'
   end
 
+  private
+
   def create_passenger_carriage
     carriage = PassengerCarriage.new('1', 36)
     carriage.manufacturer = MANUFACTURER
@@ -42,7 +44,7 @@ module Seed
     train
   end
 
-  def create_route(stations, trains)
+  def create_seed_route(stations, trains)
     station_a, station_b, station_c = stations
 
     route = Route.new('A-C', station_a, station_c)
@@ -66,7 +68,7 @@ module Seed
     passenger_train = create_passenger_train(passenger_carriage)
     cargo_train = create_cargo_train(cargo_carriage)
 
-    route = create_route(stations, [passenger_train, cargo_train])
+    route = create_seed_route(stations, [passenger_train, cargo_train])
 
     @stations = stations
     @trains = [passenger_train, cargo_train]

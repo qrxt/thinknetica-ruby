@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../utils/prompt'
+require_relative '../utils/manage'
 require_relative '../../utils/highlight'
 
 MENU_MANAGE = {
@@ -17,10 +18,10 @@ MENU_MANAGE = {
 NO_TRAINS_AVAILABLE_ERROR = 'Нет доступных поездов'
 NO_ROUTES_AVAILABLE_ERROR = 'Нет доступных маршрутов'
 
-# rubocop:disable Metrics/ModuleLength
 module PageManage
   include Prompt
   include Highlight
+  include ManageUtils
 
   def manage_subpages
     %w[
@@ -44,14 +45,7 @@ module PageManage
   def manage_add_carriage
     puts 'Прицепка вагона'
 
-    if trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
-
-      @page = 'manage'
-      return
-    end
-
-    puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
+    return if check_no_trains
 
     puts 'Введите номер поезда для прицепки вагона:'
 
@@ -59,20 +53,7 @@ module PageManage
 
     return unless train
 
-    puts 'Введите номер вагона:'
-
-    carriage_number = gets.chomp
-
-    seats = prompt_for_seats if train.is_a?(PassengerTrain)
-    volume = prompt_for_volume if train.is_a?(CargoTrain)
-
-    carriage = if train.is_a?(PassengerTrain)
-                 PassengerCarriage.new(carriage_number, seats)
-               else
-                 CargoCarriage.new(carriage_number, volume)
-               end
-
-    carriage.manufacturer = prompt_for_manufacturer
+    carriage = create_carriage(train)
 
     train.add_carriage(carriage)
 
@@ -84,14 +65,7 @@ module PageManage
   def manage_remove_carriage
     puts 'Отцепка вагона'
 
-    if trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
-
-      @page = 'manage'
-      return
-    end
-
-    puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
+    return if check_no_trains
 
     puts 'Введите номер поезда для отцепки вагона:'
 
@@ -99,17 +73,9 @@ module PageManage
 
     return unless train
 
-    carriages_string = train.carriages.map(&:number).join(', ')
+    carriage_number = prompt_for_carriage_number(train.carriages)
 
-    puts "Для поезда #{train.number} доступны вагоны: #{carriages_string}"
-
-    puts 'Введите номер вагона'
-
-    carriage_number = gets.chomp
-
-    train.remove_carriage(carriage_number)
-
-    puts 'Вагон отцеплен'
+    remove_carriage(train, carriage_number)
 
     @page = 'manage'
   end
@@ -117,14 +83,7 @@ module PageManage
   def manage_add_intermidiate_station
     puts 'Добавление промежуточной станции'
 
-    if trains.empty?
-      puts NO_ROUTES_AVAILABLE_ERROR
-
-      @page = 'manage'
-      return
-    end
-
-    puts "Сейчас доступны следующие маршруты: #{@routes.map(&:name).join(', ')}"
+    return if check_no_trains
 
     puts 'Введите название маршрута для добавление промежуточной станции:'
 
@@ -134,9 +93,7 @@ module PageManage
 
     fitting_stations = @stations.reject { |station| route.station?(station.name) }
 
-    puts "Сейчас доступны следующие станции: #{fitting_stations.map(&:name).join(', ')}"
-
-    station = prompt_for_station
+    station = prompt_for_station(fitting_stations)
 
     return unless station
 
@@ -150,20 +107,11 @@ module PageManage
 
     fitting_trains = @trains.reject(&:current_route)
 
-    if fitting_trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
+    return if check_no_trains(fitting_trains)
 
-      @page = 'manage'
-      return
-    end
-
-    puts "Сейчас доступны следующие поезда: #{fitting_trains.map(&:number).join(', ')}"
-
-    train = prompt_for_train
+    train = prompt_for_train(fitting_trains)
 
     return unless train
-
-    puts "Сейчас доступны следующие маршруты: #{@routes.map(&:name).join(', ')}"
 
     puts 'Введите название маршрута:'
 
@@ -171,9 +119,7 @@ module PageManage
 
     return unless route
 
-    train.assign_route(route)
-
-    puts "Маршрут #{route.name} назначен для поезда #{train.number}"
+    assign_route(train, route)
 
     @page = 'manage'
   end
@@ -181,14 +127,7 @@ module PageManage
   def manage_move_train
     puts 'Передвижение поезда'
 
-    if trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
-
-      @page = 'manage'
-      return
-    end
-
-    puts "Сейчас доступны следующие поезда: #{@trains.map(&:number).join(', ')}"
+    return if check_no_trains
 
     puts 'Введите номер поезда для прицепки вагона:'
 
@@ -196,9 +135,7 @@ module PageManage
 
     return unless train
 
-    puts "Введите #{highlight('forward')} или #{highlight('backward')}, чтобы отправить поезд в нужном направлении"
-
-    direction = gets.chomp
+    direction = prompt_for_direction
 
     previous_station = train.previous_station
 
@@ -212,36 +149,21 @@ module PageManage
   def manage_occupy_volume
     puts 'Изменение объема грузового вагона'
 
-    if trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
+    return if check_no_trains
 
-      @page = 'manage'
-      return
-    end
-
-    fitting_trains = @trains.select { |train| train.is_a?(CargoTrain) }.map(&:number)
-
-    puts "Сейчас доступны следующие поезда: #{fitting_trains.join(', ')}"
+    fitting_trains = @trains.select { |train| train.is_a?(CargoTrain) }
 
     puts 'Введите номер поезда для изменения объема грузового вагона:'
 
-    train = prompt_for_train
+    train = prompt_for_train(fitting_trains)
 
     return unless train
-
-    puts "У этого поезда есть следующие вагоны: #{train.carriages.map(&:number).join(', ')}"
 
     carriage = prompt_for_carriage(train.carriages)
 
     return unless carriage
 
-    puts "Введите занимаемый объем для добавления груза (сейчас #{carriage.occupied_volume} / #{carriage.volume}):"
-
-    volume = gets.chomp.to_i
-
-    carriage.fill(volume)
-
-    puts "Текущий объем: #{carriage.occupied_volume} / #{carriage.volume}"
+    occupy_carriage_volume(carriage, prompt_for_volume_fill(carriage))
 
     @page = 'manage'
   end
@@ -249,34 +171,22 @@ module PageManage
   def manage_occupy_seat
     puts 'Занятие места в пассажирском вагоне'
 
-    if trains.empty?
-      puts NO_TRAINS_AVAILABLE_ERROR
+    return if check_no_trains
 
-      @page = 'manage'
-      return
-    end
-
-    fitting_trains = @trains.select { |train| train.is_a?(PassengerTrain) }.map(&:number)
-
-    puts "Сейчас доступны следующие поезда: #{fitting_trains.join(', ')}"
+    fitting_trains = @trains.select { |train| train.is_a?(PassengerTrain) }
 
     puts 'Введите номер поезда для занятия места в пассажирском вагоне:'
 
-    train = prompt_for_train
+    train = prompt_for_train(fitting_trains)
 
     return unless train
-
-    puts "У этого поезда есть следующие вагоны: #{train.carriages.map(&:number).join(', ')}"
 
     carriage = prompt_for_carriage(train.carriages)
 
     return unless carriage
 
-    carriage.occupy_seat
-
-    puts "Теперь в вагоне занято #{carriage.occupied_seats} из #{carriage.seats_number} мест"
+    occupy_carriage_seat(carriage)
 
     @page = 'manage'
   end
 end
-# rubocop:enable Metrics/ModuleLength
