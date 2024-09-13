@@ -19,6 +19,29 @@ MENU_MAIN = {
   stop: 'завершить выполнение программы'
 }.freeze
 
+PAGE = {
+  'main' => :main,
+  'stop' => :stop,
+  'seed' => :seed,
+  'display' => :display,
+  'display_trains' => :display_trains,
+  'display_stations' => :display_stations,
+  'display_routes' => :display_routes,
+  'display_report' => :display_report,
+  'create' => :create,
+  'create_train' => :create_train,
+  'create_station' => :create_station,
+  'create_route' => :create_route,
+  'manage' => :manage,
+  'manage_add_carriage' => :manage_add_carriage,
+  'manage_remove_carriage' => :manage_remove_carriage,
+  'manage_add_intermidiate_station' => :manage_add_intermidiate_station,
+  'manage_assign_route' => :manage_assign_route,
+  'manage_move_train' => :manage_move_train,
+  'manage_occupy_volume' => :manage_occupy_volume,
+  'manage_occupy_seat' => :manage_occupy_seat
+}.freeze
+
 class Railroad
   include Highlight
   include PageCreate
@@ -37,43 +60,19 @@ class Railroad
     @routes = []
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
+  def open_page
+    page = PAGE[@page]
+
+    page ? send(page) : not_found
+  end
+
   def menu
     while @is_running
       break if @page == 'stop'
 
-      case @page
-      when 'main' then main
-      when 'stop' then stop
-
-      when 'seed' then seed
-
-      when 'display' then display
-      when 'display_trains' then display_trains
-      when 'display_stations' then display_stations
-      when 'display_routes' then display_routes
-      when 'display_report' then display_report
-
-      when 'create' then create
-      when 'create_train' then create_train
-      when 'create_station' then create_station
-      when 'create_route' then create_route
-
-      when 'manage' then manage
-      when 'manage_add_carriage' then manage_add_carriage
-      when 'manage_remove_carriage' then manage_remove_carriage
-      when 'manage_add_intermidiate_station' then manage_add_intermidiate_station
-      when 'manage_assign_route' then manage_assign_route
-      when 'manage_move_train' then manage_move_train
-      when 'manage_occupy_volume' then manage_occupy_volume
-      when 'manage_occupy_seat' then manage_occupy_seat
-
-      else not_found
-
-      end
+      open_page
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 
