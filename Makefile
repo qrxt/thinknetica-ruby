@@ -122,3 +122,10 @@ run-8:
 
 test-8:
 	ruby -Itest ./8-rubocop/tests.rb
+
+# 9
+run-9:
+	irb -r ./9-metaprogramming/main.rb
+
+test-9:
+	ruby -Itest ./9-metaprogramming/tests.rb
