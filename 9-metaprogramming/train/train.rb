@@ -2,14 +2,17 @@
 
 require_relative '../manufacturer'
 require_relative '../utils/instance_counter/instance_counter'
-require_relative '../utils/valid'
+require_relative '../utils/validation/validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
-  include Valid
+  include Validation
 
   attr_reader :number, :carriages, :current_route, :speed
+
+  validate :number, :presence
+  validate :number, :format, /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
 
   # rubocop:disable Style/ClassVars
   @@trains = []
@@ -103,15 +106,6 @@ class Train
 
   def each_carriage(&block)
     @carriages.each(&block)
-  end
-
-  def validate!
-    error_empty = 'Номера поезда обязателен'
-    error_incorrect_format = 'Номер поезда должен иметь формат: 3 цифры/буквы, необязательный дефис, 2 цифры/буквы'
-
-    raise error_empty if number.nil?
-
-    raise error_incorrect_format if number !~ /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
   end
 
   protected

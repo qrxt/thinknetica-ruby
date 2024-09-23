@@ -42,19 +42,19 @@ class TestTrain < Test::Unit::TestCase
   end
 
   def test_train_validate_number
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       PassengerTrain.new(nil)
     end
   end
 
   def test_train_validate_number_len
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       PassengerTrain.new('')
     end
   end
 
   def test_train_validate_format
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       PassengerTrain.new('12-21')
     end
   end
