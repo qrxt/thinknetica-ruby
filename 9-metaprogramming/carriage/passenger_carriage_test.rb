@@ -33,4 +33,16 @@ class TestPassengerCarriage < Test::Unit::TestCase
 
     assert_equal(0, carriage.free_seats)
   end
+
+  def test_passenger_carriage_validate_number
+    assert_raise ArgumentError do
+      PassengerCarriage.new('022', 30)
+    end
+  end
+
+  def test_passenger_carriage_validate_seats
+    assert_raise ArgumentError do
+      PassengerCarriage.new('02', nil)
+    end
+  end
 end

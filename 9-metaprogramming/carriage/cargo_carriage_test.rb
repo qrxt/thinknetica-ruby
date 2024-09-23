@@ -30,4 +30,16 @@ class TestCargoCarriage < Test::Unit::TestCase
     assert_equal(0, carriage.occupied_volume)
     assert_equal(1_000, carriage.available_volume)
   end
+
+  def test_cargo_carriage_validate_number
+    assert_raise ArgumentError do
+      CargoCarriage.new('022', 1_000)
+    end
+  end
+
+  def test_cargo_carriage_validate_volume
+    assert_raise ArgumentError do
+      CargoCarriage.new('02', nil)
+    end
+  end
 end

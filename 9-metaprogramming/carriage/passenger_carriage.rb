@@ -1,15 +1,22 @@
 # frozen_string_literal: true
 
 require_relative 'carriage'
+require_relative '../utils/validation/validation'
 
 class PassengerCarriage < Carriage
+  include Validation
+
   attr_reader :seats_number, :occupied_seats
+
+  validate :seats_number, :presence
 
   def initialize(number, seats_number)
     super(number)
 
     @seats_number = seats_number
     @occupied_seats = 0
+
+    validate!
   end
 
   def occupy_seat
