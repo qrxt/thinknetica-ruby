@@ -32,7 +32,7 @@ module PageCreate
 
     begin
       prompt_for_train_creation
-    rescue RuntimeError => e
+    rescue ArgumentError => e
       attempt_counter += 1
 
       puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"
@@ -66,7 +66,7 @@ module PageCreate
 
     begin
       prompt_for_station_creation
-    rescue RuntimeError => e
+    rescue ArgumentError => e
       attempt_counter += 1
 
       puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"
@@ -96,7 +96,7 @@ module PageCreate
 
     begin
       prompt_for_route_creation
-    rescue RuntimeError => e
+    rescue ArgumentError => e
       attempt_counter += 1
 
       puts "Введены некорректные данные (попытка №#{attempt_counter}): #{e}"

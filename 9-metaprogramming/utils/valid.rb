@@ -4,7 +4,7 @@ module Valid
   def valid?
     validate!
     true
-  rescue RuntimeError
+  rescue ArgumentError
     false
   end
 end
