@@ -1,22 +1,23 @@
 # frozen_string_literal: true
 
 require_relative '../utils/instance_counter/instance_counter'
-require_relative '../utils/valid'
-
-VALIDATION_ERROR = {
-  error_empty: 'Название маршрута обязательно',
-  error_invalid_len: 'Длина названия должна быть более двух символов',
-  error_no_departure_station: 'Станция отправления обязательна',
-  error_no_arrival_station: 'Станция прибытия обязательна',
-  error_station_wrong_type: 'В качестве аргументов должны быть переданы объекты типа Station',
-  error_same_stations: 'Станции отправления и прибытия должны быть разными'
-}.freeze
+require_relative '../utils/validation/validation'
 
 class Route
   include InstanceCounter
-  include Valid
+  include Validation
 
   attr_reader :name, :intermidiate_stations, :arrival_station, :departure_station
+
+  validate :name, :presence
+  validate :name, :len_min, 2
+
+  validate :arrival_station, :presence
+  validate :arrival_station, :type, Station
+  validate :arrival_station, :inequality, [:departure_station]
+
+  validate :departure_station, :presence
+  validate :departure_station, :type, Station
 
   def initialize(name, departure_station, arrival_station)
     @name = name
@@ -26,32 +27,6 @@ class Route
 
     validate!
     register_instance
-  end
-
-  def validate!
-    validate_name!
-    validate_stations!
-    validate_station_types!
-  end
-
-  def validate_name!
-    raise VALIDATION_ERROR[:error_empty] if name.nil?
-
-    raise VALIDATION_ERROR[:error_invalid_len] if name.empty? || name.size < 2
-  end
-
-  def validate_stations!
-    raise VALIDATION_ERROR[:error_no_departure_station] if departure_station.nil?
-
-    raise VALIDATION_ERROR[:error_no_arrival_station] if arrival_station.nil?
-
-    raise VALIDATION_ERROR[:error_same_stations] if departure_station == arrival_station
-  end
-
-  def validate_station_types!
-    is_correct_typed = departure_station.instance_of?(Station) && arrival_station.instance_of?(Station)
-
-    raise VALIDATION_ERROR[:error_station_wrong_type] unless is_correct_typed
   end
 
   def add_intermidiate_station(station)

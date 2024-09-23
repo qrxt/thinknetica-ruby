@@ -41,31 +41,31 @@ class TestRoute < Test::Unit::TestCase
   end
 
   def test_route_validate_name
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Route.new(nil, nil, nil)
     end
   end
 
   def test_route_validate_no_departure_station
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Route.new('A-B', nil, Station.new('A'))
     end
   end
 
   def test_route_validate_no_arrival_station
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Route.new('A-B', Station.new('A'), nil)
     end
   end
 
   def test_route_validate_stations_type
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Route.new('A-B', '', '')
     end
   end
 
   def test_route_validate_same_station
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       station = Station.new('A')
       Route.new('A-B', station, station)
     end
