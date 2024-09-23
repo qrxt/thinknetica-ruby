@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../utils/instance_counter/instance_counter'
-require_relative '../utils/valid'
+require_relative '../utils/validation/validation'
 
 class Station
   include InstanceCounter
-  include Valid
+  include Validation
 
   # rubocop:disable Style/ClassVars
   @@stations = []
@@ -18,6 +18,8 @@ class Station
   end
 
   attr_reader :name, :trains
+
+  validate :name, :presence
 
   def initialize(name)
     @name = name
@@ -48,14 +50,5 @@ class Station
 
   def each_train(&block)
     @trains.each(&block)
-  end
-
-  def validate!
-    error_empty = 'Название станции обязательно'
-    error_invalid_len = 'Длина названия должна быть более одного символа'
-
-    raise error_empty if name.nil?
-
-    raise error_invalid_len if name.empty?
   end
 end

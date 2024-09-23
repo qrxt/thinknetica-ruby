@@ -69,13 +69,13 @@ class TestStation < Test::Unit::TestCase
   end
 
   def test_station_validate_name
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Station.new(nil)
     end
   end
 
   def test_station_validate_name_len
-    assert_raise RuntimeError do
+    assert_raise ArgumentError do
       Station.new('')
     end
   end
